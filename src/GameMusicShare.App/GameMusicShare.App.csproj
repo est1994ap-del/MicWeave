@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <AssemblyName>MicWeave</AssemblyName>
+    <RootNamespace>GameMusicShare</RootNamespace>
+    <ApplicationIcon>Assets\MicWeave.ico</ApplicationIcon>
+    <Version>0.1.0</Version>
+    <Description>A simple microphone mixer for every Windows calling, recording, and game app.</Description>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=/_/MicWeave/src/GameMusicShare.App</PathMap>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="../../LICENSE" Link="LICENSE" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="../../README.md" Link="README.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="../../THIRD_PARTY_NOTICES.md" Link="THIRD_PARTY_NOTICES.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="../../licenses/*" Link="ThirdPartyNotices/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="../../docs/*.md" Link="docs/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Resource Include="Assets/micweave-app-icon.png" />
+    <Resource Include="Assets/Fonts/Inter-Variable.ttf" />
+    <Content Include="Assets/Fonts/OFL-Inter.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets/MicWeave.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets/MicWeave.VirtualUsb.exe" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets/MicWeave.UsbTransport.Setup.exe" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../MicWeave.VirtualUsb/LICENSE.Virtual-Cables.txt" Link="ThirdPartyNotices/LICENSE.Virtual-Cables.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../MicWeave.VirtualUsb/LICENSE.usbip-win2.txt" Link="ThirdPartyNotices/LICENSE.usbip-win2.txt" CopyToOutputDirectory="PreserveNewest" />
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="@(Content)" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets/LICENSE.NAudio.txt" Link="ThirdPartyNotices/LICENSE.NAudio.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+</Project>

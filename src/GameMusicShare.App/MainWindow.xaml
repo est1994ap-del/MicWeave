@@ -1,0 +1,283 @@
+<Window x:Class="GameMusicShare.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:GameMusicShare.Controls"
+        xmlns:brand="clr-namespace:GameMusicShare"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="{x:Static brand:ProductInfo.Name}"
+        Icon="Assets/micweave-app-icon.png"
+        Width="780" Height="990" MinWidth="480" MinHeight="620"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize"
+        Background="#0B1B2F" Foreground="#F8FAFC" Topmost="False"
+        FontFamily="{StaticResource InterFont}" FontSize="13" UseLayoutRounding="True" SnapsToDevicePixels="True">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="94" ResizeBorderThickness="7" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
+  </shell:WindowChrome.WindowChrome>
+  <Window.Resources>
+    <Style x:Key="Card" TargetType="Border">
+      <Setter Property="CornerRadius" Value="14"/>
+      <Setter Property="Padding" Value="18,12"/>
+      <Setter Property="BorderBrush" Value="#355D83"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Background" Value="{StaticResource CardSurface}"/>
+      <Setter Property="Effect"><Setter.Value><DropShadowEffect Color="#010610" BlurRadius="12" ShadowDepth="3" Opacity="0.32"/></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="SectionHeading" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="18"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="#F7FAFF"/>
+    </Style>
+    <Style x:Key="SectionSubtitle" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Foreground" Value="#BCD0EB"/>
+      <Setter Property="Margin" Value="0,2,0,0"/>
+    </Style>
+    <Style x:Key="FieldLabel" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Foreground" Value="#D4E3F6"/>
+      <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+    <Style x:Key="StatusPill" TargetType="Border">
+      <Setter Property="CornerRadius" Value="18"/>
+      <Setter Property="Padding" Value="12,7"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+    <Style x:Key="StatusText" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="TextWrapping" Value="NoWrap"/>
+    </Style>
+    <Style x:Key="IconCircle" TargetType="Border">
+      <Setter Property="Width" Value="55"/>
+      <Setter Property="Height" Value="55"/>
+      <Setter Property="CornerRadius" Value="18"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,0,18,0"/>
+    </Style>
+    <Style x:Key="VerticalSeparator" TargetType="Border">
+      <Setter Property="Width" Value="1"/>
+      <Setter Property="Background" Value="#385674"/>
+      <Setter Property="Margin" Value="8,5"/>
+    </Style>
+  </Window.Resources>
+
+  <Border BorderBrush="#46749F" BorderThickness="1" CornerRadius="17" Background="{StaticResource WindowSurface}" Padding="10">
+    <Border.Effect><DropShadowEffect Color="#010610" BlurRadius="22" ShadowDepth="7" Opacity="0.58"/></Border.Effect>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <!-- Header -->
+      <Viewbox Grid.Row="0" Stretch="Uniform">
+      <Grid x:Name="WindowHeader" Width="746" Height="94" Margin="8,0,4,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="370"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="126"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Grid Width="78" Height="58" Margin="2,0,10,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <Border Width="5" Height="14" CornerRadius="2.5" Background="#31D7F0" Margin="2,0"/>
+              <Border Width="6" Height="31" CornerRadius="3" Background="#41DEF4" Margin="2,0"/>
+              <Border Width="6" Height="45" CornerRadius="3" Background="#56E3F7" Margin="2,0"/>
+              <Border Width="6" Height="57" CornerRadius="3" Background="#61E8F8" Margin="2,0"/>
+              <Border Width="6" Height="39" CornerRadius="3" Background="#4FDFF4" Margin="2,0"/>
+              <Border Width="6" Height="25" CornerRadius="3" Background="#36D6F0" Margin="2,0"/>
+              <Border Width="5" Height="12" CornerRadius="2.5" Background="#2ACFE9" Margin="2,0"/>
+            </StackPanel>
+          </Grid>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="MicWeave" FontSize="40" FontWeight="Bold" TextWrapping="NoWrap"/>
+            <TextBlock Text="Your voice and audio. Woven together." Foreground="#BDD1EB" FontSize="12" Margin="2,1,0,0" TextWrapping="NoWrap"/>
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,8,0">
+          <Ellipse x:Name="ReadyDot" Width="14" Height="14" Fill="#43E692" Margin="0,0,13,22">
+            <Ellipse.Effect><DropShadowEffect Color="#34D399" BlurRadius="9" ShadowDepth="0" Opacity="0.72"/></Ellipse.Effect>
+          </Ellipse>
+          <StackPanel Width="190">
+            <TextBlock x:Name="ReadyText" Text="Virtual microphone ready" FontSize="12" FontWeight="SemiBold" TextWrapping="NoWrap"/>
+            <TextBlock x:Name="ReadySubtitle" Text="Choose MicWeave Microphone in your app." Foreground="#ABC0DC" FontSize="11.5" LineHeight="16" Margin="0,3,0,0"/>
+          </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Column="2" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button Style="{StaticResource ChromeButton}" Content="—" Click="MinimizeClick" ToolTip="Minimize"/>
+            <Button x:Name="MaximizeButton" Style="{StaticResource ChromeButton}" Content="□" Click="MaximizeClick" ToolTip="Maximize or restore"/>
+            <Button Style="{StaticResource ChromeButton}" Content="×" FontSize="18" Click="CloseClick" ToolTip="Close and stop all audio"/>
+          </StackPanel>
+          <Button Width="41" Height="41" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,7"
+                  Tag="&#xE713;" Content="" Background="{StaticResource Satin}" BorderBrush="#385673"
+                  Click="SettingsClick" ToolTip="Microphone setup and Windows audio settings"/>
+        </Grid>
+      </Grid>
+      </Viewbox>
+
+      <ScrollViewer x:Name="SourceScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,3,0">
+      <Viewbox Stretch="Uniform" VerticalAlignment="Top">
+      <StackPanel Width="758">
+
+      <!-- Microphone -->
+      <Border Height="270" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions><RowDefinition Height="62"/><RowDefinition Height="105"/><RowDefinition Height="77"/></Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="73"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <Border Style="{StaticResource IconCircle}" Background="#123B56" BorderBrush="#357AA2">
+              <TextBlock Text="&#xE720;" FontFamily="Segoe Fluent Icons" FontSize="30" Foreground="#37D9F3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+              <TextBlock Text="MICROPHONE" Style="{StaticResource SectionHeading}"/>
+              <TextBlock Text="Your voice and mic input" Style="{StaticResource SectionSubtitle}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <Border Style="{StaticResource StatusPill}" Background="#133E45" BorderBrush="#226C70">
+              <StackPanel Orientation="Horizontal"><Ellipse Width="13" Height="13" Fill="#49E99B" Margin="0,0,10,0"><Ellipse.Effect><DropShadowEffect Color="#34D399" BlurRadius="8" ShadowDepth="0" Opacity="0.7"/></Ellipse.Effect></Ellipse><TextBlock x:Name="MicState" Text="AUDIO DETECTED" Foreground="#54F0AC" Style="{StaticResource StatusText}"/></StackPanel>
+            </Border>
+            <CheckBox x:Name="MicActiveSwitch" Style="{StaticResource ActivationSwitch}" Checked="MicActiveChanged" Unchecked="MicActiveChanged" AutomationProperties.Name="Activate microphone" ToolTip="Include your voice in the shared microphone"/>
+            </StackPanel>
+          </Grid>
+          <local:SpectrumControl x:Name="MicSpectrum" Grid.Row="1" StartColor="#34E8C2" EndColor="#25CFEA"/>
+          <Grid Grid.Row="2" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="195"/><ColumnDefinition Width="14"/><ColumnDefinition Width="137"/><ColumnDefinition Width="12"/><ColumnDefinition Width="129"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel><TextBlock Text="Input source" Style="{StaticResource FieldLabel}"/><ComboBox x:Name="MicrophoneSelector" DisplayMemberPath="Name" SelectionChanged="MicrophoneChanged" AutomationProperties.Name="Microphone source"/></StackPanel>
+            <Border Grid.Column="1" Style="{StaticResource VerticalSeparator}"/>
+            <Grid Grid.Column="2" Height="42" VerticalAlignment="Bottom">
+              <Button x:Name="StartMicButton" Content="Start" Tag="&#xE768;" Click="StartMicrophoneClick" Background="{StaticResource Mint}" BorderBrush="#79F4D4" Foreground="#082B2B"/>
+              <Button x:Name="StopMicButton" Content="Stop" Tag="&#xE71A;" Click="StopMicrophoneClick" Background="{StaticResource Coral}" BorderBrush="#FF9CA3" Foreground="#2D1117"/>
+            </Grid>
+            <Button x:Name="MicMuteButton" Grid.Column="4" Content="Mute" Click="MicMuteClick" Style="{StaticResource MuteButton}" Height="42" VerticalAlignment="Bottom"/>
+            <Border Grid.Column="5" Style="{StaticResource VerticalSeparator}"/>
+            <Grid Grid.Column="6">
+              <Grid.RowDefinitions><RowDefinition Height="20"/><RowDefinition/></Grid.RowDefinitions>
+              <TextBlock Text="Level" Style="{StaticResource FieldLabel}" Margin="0"/>
+              <Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="45"/></Grid.ColumnDefinitions><Slider x:Name="MicGain" Minimum="-60" Maximum="6" Value="0" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="GainChanged" Foreground="#42DCC9" AutomationProperties.Name="Microphone level"/><TextBlock x:Name="MicGainText" Grid.Column="1" Text="0 dB" FontSize="12" Foreground="#E1E9F5" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="NoWrap"/></Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Border>
+
+      <!-- Program audio -->
+      <Border Height="270" Margin="0,10,0,0" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions><RowDefinition Height="62"/><RowDefinition Height="105"/><RowDefinition Height="77"/></Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="73"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <Border Style="{StaticResource IconCircle}" Background="#28264E" BorderBrush="#655AA1">
+              <TextBlock Text="♫" FontFamily="Segoe UI Symbol" FontSize="31" Foreground="#AD92FF" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+            </Border>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+              <TextBlock Text="PROGRAM AUDIO" Style="{StaticResource SectionHeading}"/>
+              <TextBlock Text="Music, videos, and other apps" Style="{StaticResource SectionSubtitle}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <Border Style="{StaticResource StatusPill}" Background="#25234B" BorderBrush="#55448B">
+              <StackPanel Orientation="Horizontal"><Ellipse Width="20" Height="20" Fill="#A78BFA" Margin="0,0,9,0"/><TextBlock x:Name="SourceState" Text="CHOOSE A SOURCE" Foreground="#C7B8FF" Style="{StaticResource StatusText}"/></StackPanel>
+            </Border>
+            <CheckBox x:Name="SourceActiveSwitch" Style="{StaticResource ActivationSwitch}" Checked="SourceActiveChanged" Unchecked="SourceActiveChanged" AutomationProperties.Name="Activate program audio" ToolTip="Include this source in the shared microphone"/>
+            </StackPanel>
+          </Grid>
+          <local:SpectrumControl x:Name="SourceSpectrum" Grid.Row="1" StartColor="#9275F8" EndColor="#C69DFF"/>
+          <Grid Grid.Row="2" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="195"/><ColumnDefinition Width="14"/><ColumnDefinition Width="90"/><ColumnDefinition Width="10"/><ColumnDefinition Width="90"/><ColumnDefinition Width="10"/><ColumnDefinition Width="90"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+              <DockPanel><TextBlock Text="Audio source" Style="{StaticResource FieldLabel}"/><Button Content="↻" Click="RefreshClick" Width="22" Height="17" Padding="0" Margin="0,-3,0,2" FontSize="13" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" ToolTip="Refresh sources"/></DockPanel>
+              <ComboBox x:Name="SourceSelector" DisplayMemberPath="DisplayName" SelectionChanged="SourceChanged" AutomationProperties.Name="Program or audio input to share"/>
+            </StackPanel>
+            <Border Grid.Column="1" Style="{StaticResource VerticalSeparator}"/>
+            <Grid Grid.Column="2" Height="42" VerticalAlignment="Bottom">
+              <Button x:Name="RouteButton" Content="Route" Tag="&#xE898;" Click="RouteClick" Background="{StaticResource Lavender}" BorderBrush="#D0C5FF" Foreground="#161334"/>
+              <Button x:Name="UnrouteButton" Content="Unroute" Tag="&#xE71A;" Click="UnrouteClick" Background="{StaticResource Coral}" BorderBrush="#FF9CA3" Foreground="#2D1117"/>
+            </Grid>
+            <Button x:Name="PauseSourceButton" Grid.Column="4" Content="Pause" Tag="&#xE769;" Click="PauseSourceClick" Height="42" VerticalAlignment="Bottom"/>
+            <Button x:Name="SourceMuteButton" Grid.Column="6" Content="Mute" Click="SourceMuteClick" Style="{StaticResource MuteButton}" Height="42" VerticalAlignment="Bottom"/>
+            <Border Grid.Column="7" Style="{StaticResource VerticalSeparator}"/>
+            <Grid Grid.Column="8">
+              <Grid.RowDefinitions><RowDefinition Height="20"/><RowDefinition/></Grid.RowDefinitions>
+              <TextBlock Text="Level" Style="{StaticResource FieldLabel}" Margin="0"/>
+              <Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="45"/></Grid.ColumnDefinitions><Slider x:Name="SourceGain" Minimum="-60" Maximum="6" Value="-14" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="GainChanged" Foreground="#A78BFA" AutomationProperties.Name="Program audio level"/><TextBlock x:Name="SourceGainText" Grid.Column="1" Text="−14 dB" FontSize="12" Foreground="#E1E9F5" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="NoWrap"/></Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Border>
+
+      <StackPanel x:Name="AdditionalSourcesPanel"/>
+      <Button x:Name="AddSourceButton" Content="Add another source" Tag="&#xE710;" Height="40" Margin="0,10,0,10" Click="AddSourceClick" AutomationProperties.Name="Add another audio source"/>
+
+      <!-- Final mix -->
+      <Border Height="267" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions><RowDefinition Height="62"/><RowDefinition Height="105"/><RowDefinition Height="74"/></Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="73"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <Border Style="{StaticResource IconCircle}" Background="#123B56" BorderBrush="#287FA7">
+              <TextBlock Text="≋" FontFamily="Segoe UI Symbol" FontSize="37" Foreground="#2DD8F0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-7,0,0"/>
+            </Border>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+              <TextBlock Text="FINAL MIX" Style="{StaticResource SectionHeading}"/>
+              <TextBlock Text="Your combined audio output" Style="{StaticResource SectionSubtitle}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <Border Style="{StaticResource StatusPill}" Background="#123E45" BorderBrush="#1F6C70">
+              <StackPanel Orientation="Horizontal"><Ellipse Width="13" Height="13" Fill="#38E7C0" Margin="0,0,10,0"><Ellipse.Effect><DropShadowEffect Color="#22D3EE" BlurRadius="8" ShadowDepth="0" Opacity="0.75"/></Ellipse.Effect></Ellipse><TextBlock x:Name="OutputState" Text="LIVE MIX DETECTED" Foreground="#55F1D0" Style="{StaticResource StatusText}"/></StackPanel>
+            </Border>
+            <CheckBox x:Name="OutputActiveSwitch" Style="{StaticResource ActivationSwitch}" Checked="OutputActiveChanged" Unchecked="OutputActiveChanged" AutomationProperties.Name="Activate final microphone output" ToolTip="Send the final mix to MicWeave Microphone"/>
+            </StackPanel>
+          </Grid>
+          <local:SpectrumControl x:Name="OutputSpectrum" Grid.Row="1" StartColor="#22D3EE" EndColor="#A78BFA"/>
+          <Grid Grid.Row="2" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="195"/><ColumnDefinition Width="14"/><ColumnDefinition Width="137"/><ColumnDefinition Width="12"/><ColumnDefinition Width="129"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel><TextBlock Text="Output (virtual microphone)" Style="{StaticResource FieldLabel}"/><Border Height="39" Background="#0B1B2F" BorderBrush="#4B6D91" BorderThickness="1" CornerRadius="8" Padding="11,0"><DockPanel VerticalAlignment="Center"><TextBlock Text="{x:Static brand:ProductInfo.MicrophoneName}" FontSize="12" VerticalAlignment="Center" TextWrapping="NoWrap"/><TextBlock Text="⌄" Foreground="#D9E8F8" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center"/></DockPanel></Border></StackPanel>
+            <Border Grid.Column="1" Style="{StaticResource VerticalSeparator}"/>
+            <Grid Grid.Column="2" Height="42" VerticalAlignment="Bottom">
+              <Button x:Name="SendButton" Content="Send" Tag="&#xE95A;" Click="SendClick" Background="{StaticResource Cyan}" BorderBrush="#8DE4FF" Foreground="#071E30"/>
+              <Button x:Name="StopSendButton" Content="Stop" Tag="&#xE71A;" Click="StopSendClick" Background="{StaticResource Coral}" BorderBrush="#FF9CA3" Foreground="#2D1117"/>
+            </Grid>
+            <Button x:Name="OutputMuteButton" Grid.Column="4" Content="Mute" Click="OutputMuteClick" Style="{StaticResource MuteButton}" Height="42" VerticalAlignment="Bottom"/>
+            <Border Grid.Column="5" Style="{StaticResource VerticalSeparator}"/>
+            <Grid Grid.Column="6">
+              <Grid.RowDefinitions><RowDefinition Height="20"/><RowDefinition/></Grid.RowDefinitions>
+              <TextBlock Text="Master" Style="{StaticResource FieldLabel}" Margin="0"/>
+              <Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="45"/></Grid.ColumnDefinitions><Slider x:Name="MasterGain" Minimum="-60" Maximum="6" Value="0" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="GainChanged" Foreground="#2DD8F0" AutomationProperties.Name="Master output level"/><TextBlock x:Name="MasterGainText" Grid.Column="1" Text="0 dB" FontSize="12" Foreground="#E1E9F5" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="NoWrap"/></Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Border>
+      </StackPanel>
+      </Viewbox>
+      </ScrollViewer>
+
+      <!-- Footer -->
+      <Viewbox Grid.Row="2" Stretch="Uniform">
+      <Grid Width="737" Height="47" Margin="13,0,8,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="37"/></Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Ellipse Width="12" Height="12" Fill="#42E48C" Margin="0,0,11,0"><Ellipse.Effect><DropShadowEffect Color="#34D399" BlurRadius="8" ShadowDepth="0" Opacity="0.7"/></Ellipse.Effect></Ellipse>
+          <TextBlock x:Name="StatusText" Text="MicWeave virtual microphone is ready to use" Foreground="#B7CAE3" FontSize="10" VerticalAlignment="Center" MaxWidth="350" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+        </StackPanel>
+        <TextBlock Grid.Column="1" Text="Works with Zoom, Teams, Discord, and any app" Foreground="#92A8C5" FontSize="9.5" VerticalAlignment="Center" TextWrapping="NoWrap"/>
+        <TextBlock Grid.Column="2" Text="≋" FontFamily="Segoe UI Symbol" Foreground="#7EC8F2" FontSize="27" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,-4,0,0"/>
+      </Grid>
+      </Viewbox>
+
+      <TextBlock x:Name="LimiterState" Visibility="Collapsed"/>
+    </Grid>
+  </Border>
+</Window>
