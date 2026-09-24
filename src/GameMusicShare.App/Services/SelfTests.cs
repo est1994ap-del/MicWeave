@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using System.Runtime.InteropServices;
 using GameMusicShare.Audio;
 using NAudio.Wave;
 
@@ -17,6 +18,25 @@ internal static class SelfTests
             catch (Exception ex) { failures++; results.Add(new { name, passed = false, error = ex.Message }); }
         }
         void Assert(bool condition, string error) { if (!condition) throw new Exception(error); }
+        Check("Setup accepts native Windows 11 x64 and ARM64, rejects mismatched drivers", () =>
+        {
+            var windows = new Version(10, 0, 22000);
+            Assert(SetupPolicy.CompatibilityProblem(windows, Architecture.X64, Architecture.X64) == null, "Intel/AMD rejected.");
+            Assert(SetupPolicy.CompatibilityProblem(windows, Architecture.Arm64, Architecture.Arm64) == null, "Native ARM64 rejected.");
+            Assert(SetupPolicy.CompatibilityProblem(windows, Architecture.Arm64, Architecture.X64) != null, "Emulated app would install wrong driver.");
+            Assert(SetupPolicy.CompatibilityProblem(new Version(10, 0, 19045), Architecture.X64, Architecture.X64) != null, "Windows 10 accepted.");
+            Assert(SetupPolicy.CompatibilityProblem(windows, Architecture.X86, Architecture.X86) != null, "Unsupported processor accepted.");
+            Assert(SetupPolicy.TransportHash(Architecture.X64) != SetupPolicy.TransportHash(Architecture.Arm64), "Processor-specific installer hashes are identical.");
+        });
+        Check("Setup preserves restart and cancellation outcomes instead of claiming readiness", () =>
+        {
+            Assert(SetupPolicy.InstallerResult(0).Outcome == SetupOutcome.Attached, "Successful installer rejected.");
+            foreach (var code in new[] { 3010, 1641 })
+                Assert(SetupPolicy.InstallerResult(code).Outcome == SetupOutcome.RestartRequired, "Restart was lost.");
+            Assert(SetupPolicy.InstallerResult(2).Outcome == SetupOutcome.Cancelled, "Cancellation looked successful.");
+            try { SetupPolicy.InstallerResult(5); throw new Exception("Failed installer looked successful."); }
+            catch (InvalidOperationException) { }
+        });
         Check("Endpoint matching requires the exact USB identity and serial, not a friendly name", () =>
         {
             Assert(EndpointIdentity.IsExpectedUsbInstance(VirtualDeviceContract.UsbInstance.ToLowerInvariant()), "Expected identity rejected.");
