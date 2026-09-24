@@ -1,0 +1,29 @@
+<UserControl x:Class="GameMusicShare.Controls.AdditionalSourceCard"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:local="clr-namespace:GameMusicShare.Controls"
+ Height="270" Margin="0,10,0,0" FontFamily="{StaticResource InterFont}">
+ <Border Style="{DynamicResource Card}">
+  <Grid>
+   <Grid.RowDefinitions><RowDefinition Height="62"/><RowDefinition Height="105"/><RowDefinition Height="77"/></Grid.RowDefinitions>
+   <Grid>
+    <Grid.ColumnDefinitions><ColumnDefinition Width="73"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <Border Style="{DynamicResource IconCircle}" Background="#28264E" BorderBrush="#655AA1"><TextBlock Text="♫" FontSize="31" Foreground="#AD92FF" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+    <StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock x:Name="Heading" Text="AUDIO SOURCE" Style="{DynamicResource SectionHeading}"/><TextBlock Text="Another app, input, or speaker feed" Style="{DynamicResource SectionSubtitle}"/></StackPanel>
+    <StackPanel Grid.Column="2" Orientation="Horizontal">
+     <TextBlock x:Name="SourceState" Text="CHOOSE A SOURCE" Foreground="#C7B8FF" FontSize="11" VerticalAlignment="Center"/>
+     <CheckBox x:Name="ActiveSwitch" Style="{StaticResource ActivationSwitch}" Checked="ActiveChanged" Unchecked="ActiveChanged" AutomationProperties.Name="Activate this audio source" ToolTip="Include this source in MicWeave Microphone"/>
+     <Button x:Name="RemoveButton" Content="×" Style="{StaticResource ChromeButton}" Margin="8,0,0,0" Click="RemoveClick" ToolTip="Remove this source" AutomationProperties.Name="Remove this audio source"/>
+    </StackPanel>
+   </Grid>
+   <local:SpectrumControl x:Name="SourceSpectrum" Grid.Row="1" StartColor="#9275F8" EndColor="#C69DFF"/>
+   <Grid Grid.Row="2" Margin="0,5,0,0">
+    <Grid.ColumnDefinitions><ColumnDefinition Width="225"/><ColumnDefinition Width="14"/><ColumnDefinition Width="90"/><ColumnDefinition Width="10"/><ColumnDefinition Width="90"/><ColumnDefinition Width="14"/><ColumnDefinition/></Grid.ColumnDefinitions>
+    <StackPanel><DockPanel><TextBlock Text="Audio source" Style="{DynamicResource FieldLabel}"/><Button Content="↻" Width="22" Height="17" Padding="0" Background="Transparent" BorderThickness="0" Click="RefreshClick" ToolTip="Refresh sources"/></DockPanel><ComboBox x:Name="SourceSelector" DisplayMemberPath="DisplayName" SelectionChanged="SourceChanged" AutomationProperties.Name="Additional program or audio input"/></StackPanel>
+    <Button x:Name="PlaybackButton" Grid.Column="2" Content="Play" Tag="&#xE768;" Height="42" VerticalAlignment="Bottom" Click="PlaybackClick"/>
+    <Button x:Name="MuteButton" Grid.Column="4" Content="Mute" Style="{StaticResource MuteButton}" Height="42" VerticalAlignment="Bottom" Click="MuteClick"/>
+    <Grid Grid.Column="6"><Grid.RowDefinitions><RowDefinition Height="20"/><RowDefinition/></Grid.RowDefinitions><TextBlock Text="Level" Style="{DynamicResource FieldLabel}"/><Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="45"/></Grid.ColumnDefinitions><Slider x:Name="Level" Minimum="-60" Maximum="6" Value="-14" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="LevelChanged" Foreground="#A78BFA" AutomationProperties.Name="Additional source level"/><TextBlock x:Name="LevelText" Text="-14 dB" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="12"/></Grid></Grid>
+   </Grid>
+  </Grid>
+ </Border>
+</UserControl>
