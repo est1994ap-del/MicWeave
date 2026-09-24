@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">MicWeave</h1>
 <p align="center"><strong>Your voice and audio. Woven together.</strong><br>One clearly labeled microphone for your calls, recordings, and games.</p>
-<p align="center">Windows 11 x64 · Open source · MIT license</p>
+<p align="center">Windows 11 · Open source · MIT license</p>
 <p align="center">
   <a href="docs/USING.md">How to use</a> ·
   <a href="#see-it-in-action">Screenshots</a> ·
@@ -19,6 +19,10 @@ headphones. No VoiceMeeter setup required.
 > **Source preview — not an installer release yet.** The app and microphone path
 > work on the development PC. You can browse or build the source today; there is
 > no public ready-to-install download yet. [What remains before release →](docs/RELEASING.md)
+
+The development installer now supports native x64 and ARM64 payloads in one
+package, without a newly signed MicWeave driver. ARM64 is build-tested only;
+fresh-PC compatibility work remains. [Installation and compatibility →](docs/INSTALLATION.md)
 
 ## See it in action
 
