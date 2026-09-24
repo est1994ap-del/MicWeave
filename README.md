@@ -1,35 +1,104 @@
-# MicWeave
+<p align="center">
+  <img src="docs/images/micweave-icon.png" width="112" height="112" alt="MicWeave's custom blue and violet woven-microphone icon">
+</p>
+<h1 align="center">MicWeave</h1>
+<p align="center"><strong>Your voice and audio. Woven together.</strong><br>One clearly labeled microphone for your calls, recordings, and games.</p>
+<p align="center">Windows 11 x64 · Open source · MIT license</p>
+<p align="center">
+  <a href="docs/USING.md">How to use</a> ·
+  <a href="#see-it-in-action">Screenshots</a> ·
+  <a href="docs/BUILDING.md">Build the preview</a> ·
+  <a href="https://github.com/est1994ap-del/MicWeave/issues">Feedback</a>
+</p>
 
-Your voice and audio. One microphone.
+Share a song while you talk. Bring another audio input into a recording. Combine
+the sources you want, then select **MicWeave Microphone** in your calling,
+recording, or game app. Your music still plays through your normal speakers or
+headphones. No VoiceMeeter setup required.
 
-MicWeave combines a microphone with selected program audio or other audio inputs.
-Choose **MicWeave Microphone** in Discord, Zoom, recording software, or a game.
-Your music keeps playing through its normal speakers or headphones.
+> **Source preview — not an installer release yet.** The app and microphone path
+> work on the development PC. You can browse or build the source today; there is
+> no public ready-to-install download yet. [What remains before release →](docs/RELEASING.md)
 
-## Current status: source preview, not a general-release installer
+## See it in action
 
-The mixer and Windows microphone path work on the development machine. This is
-an early Windows 11 x64 project, not a certified or independently audited product.
-There is no public install-and-forget release yet.
+<p align="center">
+  <img src="docs/images/micweave-live-mix.png" width="680" alt="MicWeave running on Windows with separate microphone, program audio, and final mix meters, and program sharing activated">
+</p>
+
+*Real app, real meters. These screenshots show the running development build,
+a physical microphone, and a local test-audio program. “MicWeave Audio Demo” is
+that temporary test source, not an included music player. No meter bars were
+painted in or generated.*
+
+## Choose what people hear
+
+- **Your microphone, your choice.** Select the physical mic you want to use.
+- **Share just one program.** Pick a music player or browser without sharing every desktop sound.
+- **Need more? Add another source.** Each card gets its own Active switch, meter, mute, and level.
+- **Keep your voice when the music stops.** Unroute program audio independently of your mic.
+- **See each source and the final mix.** Live frequency bars make audio activity visible.
+- **Keep listening normally.** MicWeave captures a copy of program audio; it does not move it away from your speakers.
+- **A normal Windows window.** Drag, resize, minimize, maximize, or put another window in front of it.
+
+## Quick start
+
+These steps apply **after building the preview and setting up its virtual
+microphone**. Start with the [build guide](docs/BUILDING.md) and
+[first-time setup](docs/USING.md#first-time-setup) if needed.
+
+1. **Choose your mic.** In **MICROPHONE → Input source**, select your physical microphone. Keep its Active switch on.
+2. **Choose your music or other audio.** Start playback in that program. In **PROGRAM AUDIO → Audio source**, choose its **Program** entry. Click ↻ if it is missing.
+3. **Share it.** Click **Route**, or turn on that card's Active switch. Adjust its **Level** so your voice stays easy to hear.
+4. **Select the receiving microphone.** In Discord, Zoom, a recorder, or a game, choose **MicWeave Microphone** as the microphone/input device. Keep your normal speakers or headphones as the playback/output device.
+5. **Stop sharing the program.** Click **Unroute** or switch that source off. Your microphone can keep working. To stop the entire mix, use **Stop** in **FINAL MIX**.
+
+For games using push-to-talk, hold the game's usual talk key to transmit the mix.
+Check the receiving app's microphone test too: moving bars in MicWeave alone do
+not prove that the other app is receiving it.
+
+**[Full walkthrough, control guide, and troubleshooting →](docs/USING.md)**
+
+## More than one source
+
+Click **Add another source**, choose another program or input, and enable its
+Active switch when you want it included. Sources can be previewed while off.
+
+<details>
+<summary><strong>View screenshot: an additional input with its own controls</strong></summary>
+
+<p align="center"><img src="docs/images/micweave-multiple-sources.png" width="620" alt="MicWeave with an additional physical audio-input card, its own live meter and level control, and its Active switch off for preview only"></p>
+
+Here, the second input is **PREVIEW ONLY**: its meter is active, but its sound is
+not included in the final mix until its Active switch is enabled.
+
+</details>
+
+<details>
+<summary><strong>View screenshot: stop sharing the program, keep the mic</strong></summary>
+
+<p align="center"><img src="docs/images/micweave-preview-only.png" width="620" alt="MicWeave with program audio in preview-only mode, its Active switch off, and the microphone and final mix still active"></p>
+
+The program keeps playing locally and its meter keeps moving. **Unroute** removes
+its direct contribution to the shared microphone without stopping your mic.
+Use headphones if you do not want your physical mic picking up speaker sound.
+
+</details>
+
+## Get the source and custom icon
+
+- **Developers:** [Build instructions](docs/BUILDING.md) · [Source ZIP](https://github.com/est1994ap-del/MicWeave/archive/refs/heads/main.zip) · [Build checks](https://github.com/est1994ap-del/MicWeave/actions)
+- **App artwork:** [Custom icon PNG](docs/images/micweave-icon.png) · [Windows icon ICO](https://github.com/est1994ap-del/MicWeave/blob/main/src/GameMusicShare.App/Assets/MicWeave.ico)
+- **Following the project:** Star this repository or use GitHub's Watch menu for updates. [Report an issue or suggest a feature](https://github.com/est1994ap-del/MicWeave/issues).
+
+The custom icon is already included in the app and development installer.
+For a manually created Windows shortcut, see the [desktop shortcut steps](docs/USING.md#desktop-shortcut-and-custom-icon).
 
 Before distributing an installer, we must resolve the USB device identity and
 complete clean-computer install, restart, upgrade, and removal tests.
 See [release gates](docs/RELEASING.md) and [device identity](docs/DEVICE-IDENTITY.md).
 Do not redistribute development binaries using the provisional USB identifiers.
-
-## What it does
-
-- Pick your physical microphone from a clearly labeled menu.
-- Mix one or more program, speaker-output, or audio-input sources.
-- Activate, mute, and adjust each source separately, with real audio meters.
-- Route or unroute program audio without muting your voice.
-- Play/pause compatible programs using their Windows media controls.
-- Resize, move, minimize, or cover MicWeave like a normal Windows window.
-- Keep program routing off when reopening the app until you activate it.
-
-Playback buttons cannot pause a physical microphone; they control compatible
-media apps. Active/mute controls determine what enters the mix. Meter activity
-alone does not prove that another app is receiving the microphone.
+This preview is not a certified or independently audited product.
 
 ## How the microphone works
 
