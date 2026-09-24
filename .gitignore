@@ -1,0 +1,31 @@
+# Rebuildable outputs and dependencies
+**/bin/
+**/obj/
+**/publish/
+artifacts/
+.build/
+packaging/output/
+src/GameMusicShare.App/Assets/*.exe
+# Personal state and diagnostics must never be published
+**/settings.json
+**/diagnostics.json
+**/*-test.json
+**/*.log
+**/*.log.*
+**/*.pdb
+**/*.user
+**/*.suo
+.vs/
+.idea/
+.vscode/
+.env
+.env.*
+*.pfx
+*.p12
+*.pem
+*.key
+*.zip
+*.cab
+*.dmp
+ui-preview.png
+TestResults/
