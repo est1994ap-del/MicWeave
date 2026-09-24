@@ -24,6 +24,6 @@
         }
       }
     },
-    "net8.0-windows10.0.22000/win-x64": {}
+    "net8.0-windows10.0.22000/win-arm64": {}
   }
 }

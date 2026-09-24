@@ -2,6 +2,7 @@ using System.Windows;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Runtime.InteropServices;
 using GameMusicShare.Services;
 
 namespace GameMusicShare;
@@ -32,6 +33,14 @@ public partial class App : Application
             Shutdown(await Diagnostics.RunAsync(e.Args));
             return;
         }
+        var compatibility = SetupPolicy.CompatibilityProblem(Environment.OSVersion.Version,
+            RuntimeInformation.OSArchitecture, RuntimeInformation.ProcessArchitecture);
+        if (compatibility != null)
+        {
+            MessageBox.Show(compatibility, ProductInfo.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+            Shutdown(1633);
+            return;
+        }
         if (e.Args.Contains("--render-preview"))
         {
             var window = new MainWindow { ShowActivated = false, ShowInTaskbar = false, Opacity = 0 };
@@ -50,7 +59,7 @@ public partial class App : Application
             return;
         }
         instance = new Mutex(true, "Local\\GameMusicShare.Standalone", out var first);
-        if (!first) { Shutdown(); return; }
+        if (!first) { Shutdown(1618); return; }
         DispatcherUnhandledException += (_, args) =>
         {
             AppLog.Write(args.Exception);

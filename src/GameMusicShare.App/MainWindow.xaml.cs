@@ -22,6 +22,9 @@ public partial class MainWindow : Window
     private bool playbackAvailable, playbackBusy;
     private long lastPlaybackCheck;
     private bool synchronizingActivation;
+    private bool setupBusy;
+    private string? setupHeading;
+    private readonly CancellationTokenSource windowClosed = new();
     private readonly List<AdditionalSourceCard> additionalCards = [];
     public MainWindow()
     {
@@ -56,10 +59,11 @@ public partial class MainWindow : Window
             {
                 if (engine.Endpoints == null && VirtualMicrophoneSetup.FindUsbip() != null)
                 {
-                    StatusText.Text = "Connecting MicWeave Microphone…";
-                    await VirtualMicrophoneSetup.AttachExistingAsync();
-                    for (var i = 0; i < 30 && ready && engine.Endpoints == null; i++)
-                    { await Task.Delay(200); if (ready) engine.RefreshOutput(); }
+                    await SetupMicrophoneAsync(false);
+                }
+                else if (engine.Endpoints == null && AskToInstallMicrophone())
+                {
+                    await SetupMicrophoneAsync(true);
                 }
                 if (ready && engine.Endpoints != null) Execute(engine.StartSending);
             }
@@ -68,6 +72,7 @@ public partial class MainWindow : Window
         Closed += (_, _) =>
         {
             ready = false; timer.Stop();
+            windowClosed.Cancel();
             var bounds = WindowState == WindowState.Normal ? new Rect(Left, Top, ActualWidth, ActualHeight) : RestoreBounds;
             settings.WindowLeft = bounds.Left; settings.WindowTop = bounds.Top;
             settings.WindowWidth = bounds.Width; settings.WindowHeight = bounds.Height;
@@ -145,7 +150,7 @@ public partial class MainWindow : Window
         MicState.Text = !engine.HasMicrophone ? "STOPPED" : engine.Mix.MicrophoneMuted ? "MUTED · PREVIEW" : mic.HasSignal ? "AUDIO DETECTED" : "LISTENING";
         SourceState.Text = !engine.HasSource ? "CHOOSE A SOURCE" : engine.Mix.SourceMuted ? "MUTED · PREVIEW" : source.HasSignal ? (engine.Mix.SourceRouted ? "SHARING AUDIO" : "AUDIO · PREVIEW") : "LISTENING";
         OutputState.Text = engine.Endpoints == null ? "DISCONNECTED" : !engine.IsSending ? "NOT ROUTED" : engine.Mix.OutputMuted ? "MUTED" : output.HasSignal ? "LIVE MIX DETECTED" : "SILENT";
-        ReadyText.Text = engine.Endpoints == null ? "Virtual microphone not installed" : "Virtual microphone ready";
+        ReadyText.Text = setupHeading ?? (engine.Endpoints == null ? "Microphone setup needed" : "Virtual microphone ready");
         ReadySubtitle.Text = engine.Endpoints == null ? "Click the gear to set up your microphone." : "Choose MicWeave Microphone in your app.";
         ReadyDot.Fill = engine.Endpoints == null ? Brushes.Orange : Brushes.MediumSpringGreen;
         LimiterState.Text = Environment.TickCount64 - engine.Mix.LastLimitedAt < 600 ? "Limiter reducing peaks  ·  Lower a level if this stays on." : "Limiter active  ·  Keeping your audio clear.";
@@ -299,23 +304,65 @@ public partial class MainWindow : Window
     }
     private async void SettingsClick(object sender, RoutedEventArgs e)
     {
+        if (setupBusy) return;
         if (engine.Endpoints == null)
         {
-            StatusText.Text = "Setting up MicWeave Microphone…";
-            try
+            if (VirtualMicrophoneSetup.FindUsbip() == null)
             {
-                StatusText.Text = await VirtualMicrophoneSetup.InstallAndAttachAsync();
-                await Task.Delay(1200);
-                engine.RefreshOutput();
-                ReadyText.Text = engine.Endpoints == null ? "Microphone setup needs one more try" : "Virtual microphone ready";
+                if (!AskToInstallMicrophone()) return;
             }
-            catch (Exception ex)
-            {
-                ShowError(ex);
-            }
+            await SetupMicrophoneAsync(true);
             return;
         }
         Execute(() => Process.Start(new ProcessStartInfo("ms-settings:sound") { UseShellExecute = true }));
+    }
+
+    private bool AskToInstallMicrophone() => MessageBox.Show(this,
+        "MicWeave needs to install a free, already-signed USBip component once. Windows will ask for administrator approval. You do not need VoiceMeeter, a signing certificate, or changes to Secure Boot.\n\nSave your work first: USB devices such as your mouse, keyboard, audio interface, or external drive can disconnect briefly. Stop file transfers and calls before continuing. A restart may be needed.\n\nInstall the microphone component now?",
+        "Set up MicWeave Microphone", MessageBoxButton.OKCancel, MessageBoxImage.Information, MessageBoxResult.Cancel) == MessageBoxResult.OK;
+
+    private async Task SetupMicrophoneAsync(bool allowInstall)
+    {
+        if (setupBusy) return;
+        setupBusy = true;
+        setupHeading = "Setting up microphone…";
+        StatusText.Text = allowInstall ? "Setting up MicWeave Microphone…" : "Connecting MicWeave Microphone…";
+        try
+        {
+            var result = allowInstall
+                ? await VirtualMicrophoneSetup.InstallAndAttachAsync(windowClosed.Token)
+                : await VirtualMicrophoneSetup.AttachExistingAsync(windowClosed.Token);
+            if (!ready) return;
+            StatusText.Text = result.Message;
+            if (result.Outcome == SetupOutcome.RestartRequired)
+            {
+                setupHeading = "Restart Windows to finish setup";
+                MessageBox.Show(this, result.Message, ProductInfo.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (result.Outcome == SetupOutcome.Cancelled)
+            {
+                setupHeading = "Microphone setup cancelled";
+                return;
+            }
+            for (var i = 0; i < 50 && ready && engine.Endpoints == null; i++)
+            {
+                await Task.Delay(200, windowClosed.Token);
+                if (ready) engine.RefreshOutput();
+            }
+            if (!ready) return;
+            if (engine.Endpoints == null)
+                throw new InvalidOperationException("Windows has not made MicWeave Microphone available yet. Save your work, restart Windows, and reopen MicWeave. Your existing microphone and speakers have not been replaced.");
+            engine.StartSending();
+            setupHeading = null;
+            StatusText.Text = ProductInfo.OutputInstructions;
+        }
+        catch (OperationCanceledException) when (!ready) { }
+        catch (Exception ex)
+        {
+            if (ready) { setupHeading = "Microphone setup needs attention"; ShowError(ex); }
+        }
+        finally { setupBusy = false; if (ready) UpdateControls(); }
     }
     private void CloseClick(object sender, RoutedEventArgs e) => Close();
 

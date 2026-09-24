@@ -5,8 +5,11 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <PlatformTarget>x64</PlatformTarget>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
+    <NuGetLockFilePath Condition="'$(RuntimeIdentifier)' == 'win-arm64'">packages.arm64.lock.json</NuGetLockFilePath>
+    <PlatformTarget Condition="'$(RuntimeIdentifier)' == 'win-x64'">x64</PlatformTarget>
+    <PlatformTarget Condition="'$(RuntimeIdentifier)' == 'win-arm64'">ARM64</PlatformTarget>
+    <TransportAssetsDirectory Condition="'$(TransportAssetsDirectory)' == ''">$(MSBuildProjectDirectory)/Assets</TransportAssetsDirectory>
     <AssemblyName>MicWeave</AssemblyName>
     <RootNamespace>GameMusicShare</RootNamespace>
     <ApplicationIcon>Assets\MicWeave.ico</ApplicationIcon>
@@ -28,8 +31,8 @@
     <Resource Include="Assets/Fonts/Inter-Variable.ttf" />
     <Content Include="Assets/Fonts/OFL-Inter.txt" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Assets/MicWeave.ico" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Assets/MicWeave.VirtualUsb.exe" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Assets/MicWeave.UsbTransport.Setup.exe" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(TransportAssetsDirectory)/MicWeave.VirtualUsb.exe" Link="Assets/MicWeave.VirtualUsb.exe" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(TransportAssetsDirectory)/MicWeave.UsbTransport.Setup.exe" Link="Assets/MicWeave.UsbTransport.Setup.exe" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="../MicWeave.VirtualUsb/LICENSE.Virtual-Cables.txt" Link="ThirdPartyNotices/LICENSE.Virtual-Cables.txt" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="../MicWeave.VirtualUsb/LICENSE.usbip-win2.txt" Link="ThirdPartyNotices/LICENSE.usbip-win2.txt" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="NAudio.Core" Version="2.2.1" />
