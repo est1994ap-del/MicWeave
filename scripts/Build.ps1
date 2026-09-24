@@ -43,7 +43,10 @@ try {
     }
 
     $project = 'src\GameMusicShare.App\GameMusicShare.App.csproj'
-    Invoke-Checked 'dotnet' @('restore', $project, '--locked-mode')
+    # Restore the same runtime and self-contained payload that publish uses.
+    # Otherwise a machine without cached runtime packs fails with NETSDK1112.
+    Invoke-Checked 'dotnet' @('restore', $project, '--locked-mode', '-r', 'win-x64',
+        '-p:Configuration=Release', '-p:SelfContained=true', '-p:PublishSingleFile=true')
     Invoke-Checked 'dotnet' @('publish', $project, '-c', 'Release', '-r', 'win-x64',
         '--no-restore', '--self-contained', 'true', '-p:PublishSingleFile=true',
         '-p:IncludeNativeLibrariesForSelfExtract=true', '-o', $publish)
