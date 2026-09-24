@@ -16,8 +16,9 @@ your physical mic is one source, and MicWeave Microphone is the combined output.
 1. Follow [Building MicWeave](BUILDING.md). The resulting app is
    `artifacts/publish/MicWeave.exe`. Keep its accompanying files with it.
 2. Open **MicWeave.exe**. The header tells you whether its virtual microphone is ready.
-3. If it says **Virtual microphone not installed**, click the **gear** in the top
-   right. Development setup uses the existing signed USB transport, then connects
+3. If the microphone component is missing, the first-run prompt offers to set it
+   up. If you cancel, click the **gear** in the top right to retry. Development
+   setup uses the existing signed USB transport, then connects
    MicWeave's virtual microphone. It may request administrator permission and a
    restart. Save your work first: transport installation can briefly reconnect
    USB devices, including a mouse or keyboard. Do not disable Secure Boot.
@@ -29,6 +30,9 @@ its microphone automatically. If setup still fails, read the bottom status
 message; do not keep reinstalling or changing unrelated Windows audio devices.
 The [release checklist](RELEASING.md) explains why broader installation testing
 is still required before this becomes a public installer.
+
+The [installation guide](INSTALLATION.md) explains processor support, the
+already-signed component, restart handling and Windows security-policy limits.
 
 ## Share a program, such as Spotify
 

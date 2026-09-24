@@ -16,7 +16,7 @@ pwsh -NoProfile -File .\scripts\Build.ps1
 
 This runs Go tests/vet, builds the helper, downloads and verifies the transport,
 restores locked NuGet dependencies, publishes a self-contained app, and runs the
-mixer's ten self-tests. It does **not** install a driver or alter audio defaults.
+mixer/setup's twelve self-tests. It does **not** install a driver or alter audio defaults.
 The app is placed in `artifacts/publish`; generated files are ignored by Git.
 The pinned SDK selects .NET runtime 8.0.31. Move an existing `artifacts/publish`
 folder aside before rebuilding so stale files cannot enter the next package.
@@ -32,6 +32,31 @@ public binary until the identity and compatibility release gates are met.
 The script deliberately refuses `-ReleaseInstaller` while those gates remain.
 The app and installer are currently unsigned; the separately bundled USB transport
 is signed. Do not disable Windows security features to install it.
+
+To include native Intel/AMD and ARM64 versions in **one** development installer:
+
+```powershell
+pwsh -NoProfile -File .\scripts\Build.ps1 -IncludeArm64 -DevelopmentInstaller
+```
+
+The build machine is x64 Windows. This adds `artifacts/publish-arm64`, a separately
+locked dependency restore, a native Go helper and the pinned signed ARM64 USBip
+installer. ARM64 is cross-compiled, **not executed or hardware-tested** on x64.
+The installer chooses the payload using the OS's native processor, not emulation.
+See [installation and compatibility](INSTALLATION.md) for the remaining limits.
+
+After building, test application installation in an isolated directory:
+
+```powershell
+pwsh -NoProfile -File .\scripts\Test-Installer.ps1
+```
+
+This needs Windows 11 x64, NSIS and a closed MicWeave window. It uses test-only
+registration, no desktop shortcuts, no driver installation and no audio capture.
+It checks blocking while running, file integrity, installed self-tests, downgrade
+refusal, repair, locked-file retry and preserving unrelated files on uninstall.
+Results remain under `artifacts/installer-test-*`. This does not substitute for
+clean-machine driver setup/restart or ARM64 testing.
 
 ## Tests requiring the installed transport
 
